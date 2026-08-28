@@ -26,6 +26,7 @@ int main(){
     
     // Print the output
     cout << "Running Sum: ";
+
     for(int x : result) {
         cout << x << " ";
     }

@@ -827,7 +827,62 @@ for (auto x : v)
     cout << x << " ";
 }
 ```
+Here is a complete, runnable C++ program demonstrating all three methods of printing a vector, along with their output.
 
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    // Declare and initialize a vector
+    vector<int> v = {10, 20, 30, 40, 50};
+
+    // Method 1: Index loop
+    cout << "Method 1 (Index loop): ";
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+
+    // Method 2: Iterator loop
+    cout << "Method 2 (Iterator):   ";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+
+    // Method 3: Range-based for loop
+    cout << "Method 3 (Range-based): ";
+    for (auto x : v) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Method 1 (Index loop): 10 20 30 40 50 
+Method 2 (Iterator):   10 20 30 40 50 
+Method 3 (Range-based): 10 20 30 40 50 
+
+```
+
+---
+
+### When to use which method?
+
+| Method | Best Used For | Notes |
+| --- | --- | --- |
+| **1. Index Loop** | When you need the index number `i` (e.g., printing element positions or stepping by 2). | Works like traditional C arrays. |
+| **2. Iterator Loop** | When working with STL algorithms or containers without index access (like `std::set` or `std::list`). | Uses pointers under the hood (`*it`). |
+| **3. Range-based Loop** | Cleanest option when you just need to read every element from start to end. | Use `for (const auto &x : v)` to avoid making copies of large objects. |
 This is generally the cleanest for simply reading every value.
 
 ------------------------------------------------------------------------

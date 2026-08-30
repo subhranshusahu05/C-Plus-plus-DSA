@@ -3034,37 +3034,36 @@ but not `40`.
 
 # 63. Important STL Complexity Summary
 
-  Container / Operation                      Complexity
-  ---------------------------------- ------------------
-  Vector random access `v[i]`                    `O(1)`
-  Vector `push_back()`                 Amortized `O(1)`
-  Vector `pop_back()`                            `O(1)`
-  Vector insertion/erase in middle               `O(n)`
-  Stack `push()`                                 `O(1)`
-  Stack `pop()`                                  `O(1)`
-  Stack `top()`                                  `O(1)`
-  Queue `push()`                                 `O(1)`
-  Queue `pop()`                                  `O(1)`
-  Queue `front()`                                `O(1)`
-  Queue `back()`                                 `O(1)`
-  Priority queue `push()`                    `O(log n)`
-  Priority queue `pop()`                     `O(log n)`
-  Priority queue `top()`                         `O(1)`
-  Set `insert()`                             `O(log n)`
-  Set `find()`                               `O(log n)`
-  Set `erase()`                              `O(log n)`
-  Map `insert()`                             `O(log n)`
-  Map `find()`                               `O(log n)`
-  Map `erase()`                              `O(log n)`
-  Unordered set average operations               `O(1)`
-  Unordered map average operations               `O(1)`
-  Unordered set/map worst case                   `O(n)`
-  `max_element()`                                `O(n)`
-  `min_element()`                                `O(n)`
-  `sort()`                                 `O(n log n)`
+| Container / Operation | Complexity |
+| :--- | :--- |
+| Vector random access `v[i]` | $O(1)$ |
+| Vector `push_back()` | Amortized $O(1)$ |
+| Vector `pop_back()` | $O(1)$ |
+| Vector insertion/erase in middle | $O(n)$ |
+| Stack `push()` | $O(1)$ |
+| Stack `pop()` | $O(1)$ |
+| Stack `top()` | $O(1)$ |
+| Queue `push()` | $O(1)$ |
+| Queue `pop()` | $O(1)$ |
+| Queue `front()` | $O(1)$ |
+| Queue `back()` | $O(1)$ |
+| Priority queue `push()` | $O(\log n)$ |
+| Priority queue `pop()` | $O(\log n)$ |
+| Priority queue `top()` | $O(1)$ |
+| Set `insert()` | $O(\log n)$ |
+| Set `find()` | $O(\log n)$ |
+| Set `erase()` | $O(\log n)$ |
+| Map `insert()` | $O(\log n)$ |
+| Map `find()` | $O(\log n)$ |
+| Map `erase()` | $O(\log n)$ |
+| Unordered set average operations | $O(1)$ |
+| Unordered map average operations | $O(1)$ |
+| Unordered set/map worst case | $O(n)$ |
+| `max_element()` | $O(n)$ |
+| `min_element()` | $O(n)$ |
+| `sort()` | $O(n \log n)$ |
 
-> Complexity can depend on the specific operation and iterator/container
-> type. The table above is the standard DSA-level summary.
+> **Note:** Complexity can depend on the specific operation and iterator/container type. The table above is the standard DSA-level summary.
 
 ------------------------------------------------------------------------
 

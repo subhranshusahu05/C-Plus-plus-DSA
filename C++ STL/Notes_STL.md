@@ -1668,6 +1668,82 @@ Returns an iterator to the first element that is **strictly greater
 than** `x`.
 
 These are important in sorted containers.
+------------------------------------------------------------------------
+Here is a complete, runnable C++ program demonstrating `lower_bound` and `upper_bound` with `std::set`, along with output and clear explanations of how edge cases behave.
+
+```cpp
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    // std::set automatically keeps elements sorted and unique
+    set<int> st = {10, 20, 30, 40, 50};
+
+    cout << "Set contents: ";
+    for (int x : st) cout << x << " ";
+    cout << "\n\n";
+
+    // --- CASE 1: Value exists in the set (x = 30) ---
+    auto lb1 = st.lower_bound(30); // >= 30
+    auto ub1 = st.upper_bound(30); // > 30
+
+    cout << "--- Searching for 30 (Value Exists) ---\n";
+    cout << "lower_bound(30): " << *lb1 << " (First element >= 30)\n";
+    cout << "upper_bound(30): " << *ub1 << " (First element > 30)\n\n";
+
+    // --- CASE 2: Value does NOT exist in the set (x = 25) ---
+    auto lb2 = st.lower_bound(25); // >= 25
+    auto ub2 = st.upper_bound(25); // > 25
+
+    cout << "--- Searching for 25 (Value Missing) ---\n";
+    cout << "lower_bound(25): " << *lb2 << " (First element >= 25)\n";
+    cout << "upper_bound(25): " << *ub2 << " (First element > 25)\n\n";
+
+    // --- CASE 3: Value is larger than all elements (x = 60) ---
+    auto lb3 = st.lower_bound(60);
+
+    cout << "--- Searching for 60 (Out of Bounds) ---\n";
+    if (lb3 == st.end()) {
+        cout << "lower_bound(60): Reached st.end() (No element >= 60)\n";
+    }
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Set contents: 10 20 30 40 50 
+
+--- Searching for 30 (Value Exists) ---
+lower_bound(30): 30 (First element >= 30)
+upper_bound(30): 40 (First element > 30)
+
+--- Searching for 25 (Value Missing) ---
+lower_bound(25): 30 (First element >= 25)
+upper_bound(25): 30 (First element > 25)
+
+--- Searching for 60 (Out of Bounds) ---
+lower_bound(60): Reached st.end() (No element >= 60)
+
+```
+
+---
+
+### Key Takeaways
+
+| Query ($x$) | `lower_bound(x)` ($\ge x$) | `upper_bound(x)` ($> x$) | Notes |
+| --- | --- | --- | --- |
+| **`30`** (present) | `30` | `40` | `lower_bound` points to the element itself; `upper_bound` skips to the next one. |
+| **`25`** (missing) | `30` | `30` | Both point to `30` because it's the first element greater than `25`. |
+| **`60`** (out of bounds) | `st.end()` | `st.end()` | Always check if the returned iterator equals `st.end()` before dereferencing (`*it`) to avoid segmentation faults! |
+
+> **Time Complexity:**
+> Both `st.lower_bound()` and `st.upper_bound()` run in **$O(\log N)$** time because `std::set` is implemented as a balanced binary search tree (Red-Black Tree).
 
 ------------------------------------------------------------------------
 

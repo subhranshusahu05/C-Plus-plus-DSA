@@ -2926,18 +2926,17 @@ Output:
 
 The lecture focuses on these commonly useful algorithms:
 
-  STL                        Purpose
-  -------------------------- -------------------------------------------
-  `sort()`                   Sort a range
-  `greater<>`                Descending/custom ordering helper
-  `__builtin_popcount()`     Count set bits
-  `__builtin_popcountll()`   Count set bits in `long long`
-  `next_permutation()`       Generate next lexicographical permutation
-  `max_element()`            Find maximum element
-  `min_element()`            Find minimum element
+| STL Algorithm | Purpose |
+| :--- | :--- |
+| `sort()` | Sort a range |
+| `greater<>` | Descending/custom ordering helper |
+| `__builtin_popcount()` | Count set bits |
+| `__builtin_popcountll()` | Count set bits in `long long` |
+| `next_permutation()` | Generate next lexicographical permutation |
+| `max_element()` | Find maximum element |
+| `min_element()` | Find minimum element |
 
-There are many more STL algorithms, but you can learn additional ones as
-needed while solving problems.
+There are many more STL algorithms, but you can learn additional ones as needed while solving problems.
 
 ------------------------------------------------------------------------
 

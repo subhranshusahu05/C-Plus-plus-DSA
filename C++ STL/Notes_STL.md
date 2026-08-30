@@ -2607,6 +2607,95 @@ Ask:
 Return `true` if yes, otherwise `false`.
 
 This approach makes custom sorting much easier.
+Your mental model for custom comparators is **100% correct** and is the single best way to approach sorting logic in C++!
+
+Taking just two elements `p1` and `p2` and asking *"Should `p1` come before `p2`?"* avoids getting confused by the full array.
+
+
+
+---
+
+### Complete Executable Code
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <utility>   // For std::pair
+#include <algorithm> // For std::sort
+
+using namespace std;
+
+// Step 1 & 2: Identify data type and accept two parameters
+bool comparator(pair<int, int> p1, pair<int, int> p2) {
+    // Case 1: If second elements are different, 
+    // smaller second element comes first (increasing order)
+    if (p1.second < p2.second) return true;
+    if (p1.second > p2.second) return false;
+
+    // Case 2: If second elements are equal, 
+    // larger first element comes first (decreasing order)
+    return p1.first > p2.first;
+}
+
+int main() {
+    vector<pair<int, int>> v = {
+        {1, 2},
+        {2, 1},
+        {4, 1}
+    };
+
+    // Pass the function name as the 3rd argument
+    sort(v.begin(), v.end(), comparator);
+
+    // Print the sorted vector
+    cout << "Sorted pairs:\n";
+    for (auto p : v) {
+        cout << "{" << p.first << ", " << p.second << "}\n";
+    }
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Sorted pairs:
+{4, 1}
+{2, 1}
+{1, 2}
+
+```
+
+---
+
+### Pro-Tips & Common Gotchas for C++ Comparators
+
+#### 1. Avoid Duplicate Logic (Shorter Version)
+
+Instead of checking `p1.second < p2.second` and `p1.second > p2.second` separately, you can handle it like this:
+
+```cpp
+bool comparator(const pair<int, int>& p1, const pair<int, int>& p2) {
+    if (p1.second != p2.second) {
+        return p1.second < p2.second; // Increasing by second
+    }
+    return p1.first > p2.first;      // Decreasing by first
+}
+
+```
+
+#### 2. Pass by Reference (`const &`)
+
+Notice the `const pair<int, int>&` above. Passing parameters by **const reference** prevents C++ from making unnecessary copies of objects during every comparison, making your code significantly faster.
+
+#### 3. Strict Weak Ordering (Crucial Rule!)
+
+Never return `true` when two elements are equal in value. Returning `true` for equal values causes undefined behavior (and can lead to runtime errors/segmentation faults) because C++ requires a **Strict Weak Ordering** relationship.
+
+> **Example:**
+> If `p1 == p2`, the comparator **must** return `false`.
 
 ------------------------------------------------------------------------
 

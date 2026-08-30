@@ -7,7 +7,20 @@
 > algorithms.
 
 ------------------------------------------------------------------------
+## 🗂️ C++ STL for DSA: Visual Table of Contents
 
+| 🛠️ 1. Fundamentals & Utilities | 📦 2. Sequence Containers |
+| :--- | :--- |
+| **• STL Introduction:** Categories & Importance<br>**• Basic Skeleton:** `#include <bits/stdc++.h>`<br>**• Functions:** Void vs. Return-type<br>**• Pairs:** Basic, Nested, and Array of Pairs | **• Vector Basics:** Array vs Vector, Declarations<br>**• Vector Ops:** `push_back` vs `emplace_back`<br>**• Modifying Vectors:** Insert, Erase, and Access<br>**• List & Deque:** Linked lists and double-ended queues |
+
+| 🥞 3. Container Adapters | 🔑 4. Associative Containers |
+| :--- | :--- |
+| **• Stack:** LIFO mechanics (`push`, `pop`, `top`)<br>**• Queue:** FIFO mechanics (`push`, `pop`, `front`, `back`)<br>**• Priority Queue:** Max-heap by default<br>**• Min-Heap:** Setup using `greater<int>` | **• Sets (Unique):** `set`, `unordered_set`<br>**• Multisets (Duplicates):** `multiset`<br>**• Maps (Key-Value):** `map`, `unordered_map`, `multimap`<br>**• Lookups:** `find()`, `count()`, `lower/upper_bound()` |
+
+| ⚙️ 5. Iterators & Algorithms | 🧠 6. Summaries & Revision |
+| :--- | :--- |
+| **• Iterators:** `begin()`, `end()`, reverse iterators<br>**• Range Rule:** The `[start, end)` concept<br>**• Sorting:** `sort()`, Descending, Custom Comparators<br>**• Math/Utility:** `popcount`, `next_permutation`, `min/max` | **• Container Cheat Sheet:** Quick comparisons<br>**• Time Complexity:** Big-O for all major operations<br>**• Code Templates:** Essential DSA snippets<br>**• Revision:** Mental Map, Checklist, and 1-Page Summary |
+------------------------------------------------------------------------
 ## 1. What is STL?
 
 **STL = Standard Template Library**

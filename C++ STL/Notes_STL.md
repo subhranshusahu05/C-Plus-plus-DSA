@@ -1444,7 +1444,85 @@ Output:
 Max Heap → maximum element at top
 Min Heap → minimum element at top
 ```
+Your understanding and summary of **Min Priority Queue** is completely spot-on!
 
+Here is a full, runnable example along with a clear breakdown of *why* the syntax looks the way it does:
+
+---
+
+### Complete Code Example
+
+```cpp
+#include <iostream>
+#include <queue>   // Required for priority_queue
+#include <vector>  // Required for underlying container type
+#include <functional> // Required for std::greater
+
+using namespace std;
+
+int main() {
+    // Declare a Min-Heap (smallest element at top)
+    priority_queue<int, vector<int>, greater<int>> minPQ;
+
+    // Push elements into the queue
+    minPQ.push(5);
+    minPQ.push(2);
+    minPQ.push(8);
+    minPQ.push(10);
+
+    // Access the smallest element
+    cout << "Smallest element (top): " << minPQ.top() << endl; // Output: 2
+
+    // Printing and removing elements in ascending order
+    cout << "Elements in order of priority (Min to Max): ";
+    while (!minPQ.empty()) {
+        cout << minPQ.top() << " "; // Print current minimum
+        minPQ.pop();               // Remove current minimum
+    }
+    cout << endl;
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Smallest element (top): 2
+Elements in order of priority (Min to Max): 2 5 8 10 
+
+```
+
+---
+
+### Decoding the Syntax: `<int, vector<int>, greater<int>>`
+
+When declaring a min-heap, C++ requires three template parameters:
+
+```cpp
+priority_queue< Type, Container, Comparator > pq;
+
+```
+
+1. **`int`** $\rightarrow$ The data type stored inside the queue.
+2. **`vector<int>`** $\rightarrow$ The underlying container used to hold the heap elements (defaults to `vector`).
+3. **`greater<int>`** $\rightarrow$ The comparison functor. By default, C++ uses `less<int>`, which creates a **Max-Heap**. Passing `greater<int>` flips the logic so smaller elements have higher priority.
+
+---
+
+### Quick Heap Summary for DSA
+
+| Heap Type | Declaration | `pq.top()` Returns |
+| --- | --- | --- |
+| **Max Heap** *(Default)* | `priority_queue<int> pq;` | Largest element |
+| **Min Heap** | `priority_queue<int, vector<int>, greater<int>> pq;` | Smallest element |
+
+> **Key Complexity:**
+> * **Push / Pop:** $O(\log N)$
+> * **Top:** $O(1)$
+> 
+>
 ------------------------------------------------------------------------
 
 # 28. Set

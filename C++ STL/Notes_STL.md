@@ -391,6 +391,58 @@ vector<pair<int, int>> v;
 v.push_back({1, 2});
 v.emplace_back(3, 4);
 ```
+Here is the breakdown of why `emplace_back` and `push_back` are different when working with objects like `std::pair` or custom classes:
+
+---
+
+### The Key Difference: Construction vs. Copying
+
+* **`push_back({1, 2})`**:
+1. Creates a **temporary object** (a `std::pair<int, int>`) in memory using `{1, 2}`.
+2. **Copies (or moves)** that temporary object into the vector's allocated memory.
+3. **Destroys** the temporary object.
+
+
+* **`emplace_back(1, 2)`**:
+1. Forwards the arguments `1` and `2` directly to the vector's underlying memory.
+2. **Constructs the object in-place** inside the vector.
+3. No temporary object is created, and no extra copy/move operation happens.
+
+
+
+---
+
+### Comparison Summary
+
+| Feature | `v.push_back({1, 2})` | `v.emplace_back(1, 2)` |
+| --- | --- | --- |
+| **Syntax** | Requires braces `{}` or explicit object type | Takes raw constructor parameters |
+| **How it works** | Creates a temporary object first, then copies/moves it into the vector | Constructs the object directly inside the vector |
+| **Performance** | Slightly slower for complex objects (extra copy/move) | Faster/more efficient for complex objects |
+| **Primary Use Case** | When you already have an existing object to add | When you are creating a new object on the fly |
+
+---
+
+### Why It Matters with Custom Classes
+
+For basic types like `int`, there is zero performance difference. However, for custom objects with heavy constructors or copy operations, `emplace_back` avoids unnecessary overhead:
+
+```cpp
+struct Person {
+    string name;
+    int age;
+    Person(string n, int a) : name(n), age(a) {}
+};
+
+vector<Person> people;
+
+// push_back needs braces or a fully formed object:
+people.push_back(Person("Alice", 25)); // Temporary created -> moved -> destroyed
+
+// emplace_back takes the arguments directly:
+people.emplace_back("Bob", 30);         // Constructed directly inside the vector
+
+```
 
 The second form constructs the pair directly in the vector.
 

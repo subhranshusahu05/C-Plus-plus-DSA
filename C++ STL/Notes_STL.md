@@ -2207,7 +2207,7 @@ O(n)
 # 45. Container Comparison Cheat Sheet
 
   ------------------------------------------------------------------------
-  Container          Duplicate         Ordered           Main Use
+  Container       /     Duplicate   /      Ordered      /    Main Use
   ------------------ ----------------- ----------------- -----------------
   `vector`           Yes               Insertion order   Dynamic array
 
@@ -2353,6 +2353,98 @@ greater<int>()
 
 tells `sort()` to arrange values in descending order.
 
+
+Your summaries for `std::sort` are spot on!
+
+Here is a full C++ program compiling all these sorting concepts together for quick reference:
+
+---
+
+### Complete Code Example
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm> // Required for std::sort
+#include <functional> // Required for std::greater
+
+using namespace std;
+
+// Helper function to print vectors cleanly
+void printVector(const string& label, const vector<int>& v) {
+    cout << label << ": ";
+    for (int x : v) cout << x << " ";
+    cout << endl;
+}
+
+int main() {
+    // ---------------------------------------------------------
+    // 47. Sorting Full Array & Full Vector
+    // ---------------------------------------------------------
+    int a[] = {5, 1, 3, 2};
+    int n = 4;
+    sort(a, a + n);
+    
+    cout << "Sorted Array: ";
+    for (int i = 0; i < n; i++) cout << a[i] << " ";
+    cout << "\n\n";
+
+    vector<int> v1 = {5, 1, 3, 2};
+    sort(v1.begin(), v1.end());
+    printVector("Sorted Full Vector", v1);
+    cout << endl;
+
+    // ---------------------------------------------------------
+    // 48. Sorting Only a Portion [start, end)
+    // ---------------------------------------------------------
+    vector<int> v2 = {5, 4, 3, 2, 1};
+    // Index positions: 0, 1, 2, 3, 4
+    // Values:        {5, 4, 3, 2, 1}
+    
+    // Sorts elements at indices 1, 2, and 3 (excluding index 4)
+    sort(v2.begin() + 1, v2.begin() + 4); 
+    printVector("Portion Sorted (Indices 1 to 3)", v2);
+    // Output: 5 2 3 4 1
+    cout << endl;
+
+    // ---------------------------------------------------------
+    // 49. Descending Sort using greater<int>()
+    // ---------------------------------------------------------
+    vector<int> v3 = {1, 3, 2, 5, 4};
+    sort(v3.begin(), v3.end(), greater<int>());
+    printVector("Descending Sort", v3);
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Sorted Array: 1 2 3 5 
+
+Sorted Full Vector: 1 2 3 5 
+
+Portion Sorted (Indices 1 to 3): 5 2 3 4 1 
+
+Descending Sort: 5 4 3 2 1 
+
+```
+
+---
+
+### Summary Table for `std::sort`
+
+| Target | Code | Time Complexity |
+| --- | --- | --- |
+| **Array (Ascending)** | `sort(a, a + n);` | $O(N \log N)$ |
+| **Vector (Ascending)** | `sort(v.begin(), v.end());` | $O(N \log N)$ |
+| **Sub-range (Ascending)** | `sort(v.begin() + L, v.begin() + R + 1);` *(for range $[L, R]$)* | $O(K \log K)$ *(where $K = R - L + 1$)* |
+| **Vector (Descending)** | `sort(v.begin(), v.end(), greater<int>());` | $O(N \log N)$ |
+
+> **Key Takeaway for DSA:**
+> `std::sort()` in C++ uses **IntroSort** (a hybrid of QuickSort, HeapSort, and InsertionSort), guaranteeing worst-case performance of **$O(N \log N)$**.
 ------------------------------------------------------------------------
 
 # 50. Custom Comparator

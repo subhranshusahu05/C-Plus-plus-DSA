@@ -7,7 +7,20 @@
 > algorithms.
 
 ------------------------------------------------------------------------
+## 🗂️ C++ STL for DSA: Visual Table of Contents
 
+| 🛠️ 1. Fundamentals & Utilities | 📦 2. Sequence Containers |
+| :--- | :--- |
+| **• STL Introduction:** Categories & Importance<br>**• Basic Skeleton:** `#include <bits/stdc++.h>`<br>**• Functions:** Void vs. Return-type<br>**• Pairs:** Basic, Nested, and Array of Pairs | **• Vector Basics:** Array vs Vector, Declarations<br>**• Vector Ops:** `push_back` vs `emplace_back`<br>**• Modifying Vectors:** Insert, Erase, and Access<br>**• List & Deque:** Linked lists and double-ended queues |
+
+| 🥞 3. Container Adapters | 🔑 4. Associative Containers |
+| :--- | :--- |
+| **• Stack:** LIFO mechanics (`push`, `pop`, `top`)<br>**• Queue:** FIFO mechanics (`push`, `pop`, `front`, `back`)<br>**• Priority Queue:** Max-heap by default<br>**• Min-Heap:** Setup using `greater<int>` | **• Sets (Unique):** `set`, `unordered_set`<br>**• Multisets (Duplicates):** `multiset`<br>**• Maps (Key-Value):** `map`, `unordered_map`, `multimap`<br>**• Lookups:** `find()`, `count()`, `lower/upper_bound()` |
+
+| ⚙️ 5. Iterators & Algorithms | 🧠 6. Summaries & Revision |
+| :--- | :--- |
+| **• Iterators:** `begin()`, `end()`, reverse iterators<br>**• Range Rule:** The `[start, end)` concept<br>**• Sorting:** `sort()`, Descending, Custom Comparators<br>**• Math/Utility:** `popcount`, `next_permutation`, `min/max` | **• Container Cheat Sheet:** Quick comparisons<br>**• Time Complexity:** Big-O for all major operations<br>**• Code Templates:** Essential DSA snippets<br>**• Revision:** Mental Map, Checklist, and 1-Page Summary |
+------------------------------------------------------------------------
 ## 1. What is STL?
 
 **STL = Standard Template Library**
@@ -390,6 +403,58 @@ vector<pair<int, int>> v;
 
 v.push_back({1, 2});
 v.emplace_back(3, 4);
+```
+Here is the breakdown of why `emplace_back` and `push_back` are different when working with objects like `std::pair` or custom classes:
+
+---
+
+### The Key Difference: Construction vs. Copying
+
+* **`push_back({1, 2})`**:
+1. Creates a **temporary object** (a `std::pair<int, int>`) in memory using `{1, 2}`.
+2. **Copies (or moves)** that temporary object into the vector's allocated memory.
+3. **Destroys** the temporary object.
+
+
+* **`emplace_back(1, 2)`**:
+1. Forwards the arguments `1` and `2` directly to the vector's underlying memory.
+2. **Constructs the object in-place** inside the vector.
+3. No temporary object is created, and no extra copy/move operation happens.
+
+
+
+---
+
+### Comparison Summary
+
+| Feature | `v.push_back({1, 2})` | `v.emplace_back(1, 2)` |
+| --- | --- | --- |
+| **Syntax** | Requires braces `{}` or explicit object type | Takes raw constructor parameters |
+| **How it works** | Creates a temporary object first, then copies/moves it into the vector | Constructs the object directly inside the vector |
+| **Performance** | Slightly slower for complex objects (extra copy/move) | Faster/more efficient for complex objects |
+| **Primary Use Case** | When you already have an existing object to add | When you are creating a new object on the fly |
+
+---
+
+### Why It Matters with Custom Classes
+
+For basic types like `int`, there is zero performance difference. However, for custom objects with heavy constructors or copy operations, `emplace_back` avoids unnecessary overhead:
+
+```cpp
+struct Person {
+    string name;
+    int age;
+    Person(string n, int a) : name(n), age(a) {}
+};
+
+vector<Person> people;
+
+// push_back needs braces or a fully formed object:
+people.push_back(Person("Alice", 25)); // Temporary created -> moved -> destroyed
+
+// emplace_back takes the arguments directly:
+people.emplace_back("Bob", 30);         // Constructed directly inside the vector
+
 ```
 
 The second form constructs the pair directly in the vector.
@@ -775,7 +840,62 @@ for (auto x : v)
     cout << x << " ";
 }
 ```
+Here is a complete, runnable C++ program demonstrating all three methods of printing a vector, along with their output.
 
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    // Declare and initialize a vector
+    vector<int> v = {10, 20, 30, 40, 50};
+
+    // Method 1: Index loop
+    cout << "Method 1 (Index loop): ";
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+
+    // Method 2: Iterator loop
+    cout << "Method 2 (Iterator):   ";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+
+    // Method 3: Range-based for loop
+    cout << "Method 3 (Range-based): ";
+    for (auto x : v) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Method 1 (Index loop): 10 20 30 40 50 
+Method 2 (Iterator):   10 20 30 40 50 
+Method 3 (Range-based): 10 20 30 40 50 
+
+```
+
+---
+
+### When to use which method?
+
+| Method | Best Used For | Notes |
+| --- | --- | --- |
+| **1. Index Loop** | When you need the index number `i` (e.g., printing element positions or stepping by 2). | Works like traditional C arrays. |
+| **2. Iterator Loop** | When working with STL algorithms or containers without index access (like `std::set` or `std::list`). | Uses pointers under the hood (`*it`). |
+| **3. Range-based Loop** | Cleanest option when you just need to read every element from start to end. | Use `for (const auto &x : v)` to avoid making copies of large objects. |
 This is generally the cleanest for simply reading every value.
 
 ------------------------------------------------------------------------
@@ -1337,7 +1457,85 @@ Output:
 Max Heap → maximum element at top
 Min Heap → minimum element at top
 ```
+Your understanding and summary of **Min Priority Queue** is completely spot-on!
 
+Here is a full, runnable example along with a clear breakdown of *why* the syntax looks the way it does:
+
+---
+
+### Complete Code Example
+
+```cpp
+#include <iostream>
+#include <queue>   // Required for priority_queue
+#include <vector>  // Required for underlying container type
+#include <functional> // Required for std::greater
+
+using namespace std;
+
+int main() {
+    // Declare a Min-Heap (smallest element at top)
+    priority_queue<int, vector<int>, greater<int>> minPQ;
+
+    // Push elements into the queue
+    minPQ.push(5);
+    minPQ.push(2);
+    minPQ.push(8);
+    minPQ.push(10);
+
+    // Access the smallest element
+    cout << "Smallest element (top): " << minPQ.top() << endl; // Output: 2
+
+    // Printing and removing elements in ascending order
+    cout << "Elements in order of priority (Min to Max): ";
+    while (!minPQ.empty()) {
+        cout << minPQ.top() << " "; // Print current minimum
+        minPQ.pop();               // Remove current minimum
+    }
+    cout << endl;
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Smallest element (top): 2
+Elements in order of priority (Min to Max): 2 5 8 10 
+
+```
+
+---
+
+### Decoding the Syntax: `<int, vector<int>, greater<int>>`
+
+When declaring a min-heap, C++ requires three template parameters:
+
+```cpp
+priority_queue< Type, Container, Comparator > pq;
+
+```
+
+1. **`int`** $\rightarrow$ The data type stored inside the queue.
+2. **`vector<int>`** $\rightarrow$ The underlying container used to hold the heap elements (defaults to `vector`).
+3. **`greater<int>`** $\rightarrow$ The comparison functor. By default, C++ uses `less<int>`, which creates a **Max-Heap**. Passing `greater<int>` flips the logic so smaller elements have higher priority.
+
+---
+
+### Quick Heap Summary for DSA
+
+| Heap Type | Declaration | `pq.top()` Returns |
+| --- | --- | --- |
+| **Max Heap** *(Default)* | `priority_queue<int> pq;` | Largest element |
+| **Min Heap** | `priority_queue<int, vector<int>, greater<int>> pq;` | Smallest element |
+
+> **Key Complexity:**
+> * **Push / Pop:** $O(\log N)$
+> * **Top:** $O(1)$
+> 
+>
 ------------------------------------------------------------------------
 
 # 28. Set
@@ -1483,6 +1681,82 @@ Returns an iterator to the first element that is **strictly greater
 than** `x`.
 
 These are important in sorted containers.
+------------------------------------------------------------------------
+Here is a complete, runnable C++ program demonstrating `lower_bound` and `upper_bound` with `std::set`, along with output and clear explanations of how edge cases behave.
+
+```cpp
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    // std::set automatically keeps elements sorted and unique
+    set<int> st = {10, 20, 30, 40, 50};
+
+    cout << "Set contents: ";
+    for (int x : st) cout << x << " ";
+    cout << "\n\n";
+
+    // --- CASE 1: Value exists in the set (x = 30) ---
+    auto lb1 = st.lower_bound(30); // >= 30
+    auto ub1 = st.upper_bound(30); // > 30
+
+    cout << "--- Searching for 30 (Value Exists) ---\n";
+    cout << "lower_bound(30): " << *lb1 << " (First element >= 30)\n";
+    cout << "upper_bound(30): " << *ub1 << " (First element > 30)\n\n";
+
+    // --- CASE 2: Value does NOT exist in the set (x = 25) ---
+    auto lb2 = st.lower_bound(25); // >= 25
+    auto ub2 = st.upper_bound(25); // > 25
+
+    cout << "--- Searching for 25 (Value Missing) ---\n";
+    cout << "lower_bound(25): " << *lb2 << " (First element >= 25)\n";
+    cout << "upper_bound(25): " << *ub2 << " (First element > 25)\n\n";
+
+    // --- CASE 3: Value is larger than all elements (x = 60) ---
+    auto lb3 = st.lower_bound(60);
+
+    cout << "--- Searching for 60 (Out of Bounds) ---\n";
+    if (lb3 == st.end()) {
+        cout << "lower_bound(60): Reached st.end() (No element >= 60)\n";
+    }
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Set contents: 10 20 30 40 50 
+
+--- Searching for 30 (Value Exists) ---
+lower_bound(30): 30 (First element >= 30)
+upper_bound(30): 40 (First element > 30)
+
+--- Searching for 25 (Value Missing) ---
+lower_bound(25): 30 (First element >= 25)
+upper_bound(25): 30 (First element > 25)
+
+--- Searching for 60 (Out of Bounds) ---
+lower_bound(60): Reached st.end() (No element >= 60)
+
+```
+
+---
+
+### Key Takeaways
+
+| Query ($x$) | `lower_bound(x)` ($\ge x$) | `upper_bound(x)` ($> x$) | Notes |
+| --- | --- | --- | --- |
+| **`30`** (present) | `30` | `40` | `lower_bound` points to the element itself; `upper_bound` skips to the next one. |
+| **`25`** (missing) | `30` | `30` | Both point to `30` because it's the first element greater than `25`. |
+| **`60`** (out of bounds) | `st.end()` | `st.end()` | Always check if the returned iterator equals `st.end()` before dereferencing (`*it`) to avoid segmentation faults! |
+
+> **Time Complexity:**
+> Both `st.lower_bound()` and `st.upper_bound()` run in **$O(\log N)$** time because `std::set` is implemented as a balanced binary search tree (Red-Black Tree).
 
 ------------------------------------------------------------------------
 
@@ -1946,7 +2220,7 @@ O(n)
 # 45. Container Comparison Cheat Sheet
 
   ------------------------------------------------------------------------
-  Container          Duplicate         Ordered           Main Use
+  Container       /     Duplicate   /      Ordered      /    Main Use
   ------------------ ----------------- ----------------- -----------------
   `vector`           Yes               Insertion order   Dynamic array
 
@@ -2092,6 +2366,98 @@ greater<int>()
 
 tells `sort()` to arrange values in descending order.
 
+
+Your summaries for `std::sort` are spot on!
+
+Here is a full C++ program compiling all these sorting concepts together for quick reference:
+
+---
+
+### Complete Code Example
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm> // Required for std::sort
+#include <functional> // Required for std::greater
+
+using namespace std;
+
+// Helper function to print vectors cleanly
+void printVector(const string& label, const vector<int>& v) {
+    cout << label << ": ";
+    for (int x : v) cout << x << " ";
+    cout << endl;
+}
+
+int main() {
+    // ---------------------------------------------------------
+    // 47. Sorting Full Array & Full Vector
+    // ---------------------------------------------------------
+    int a[] = {5, 1, 3, 2};
+    int n = 4;
+    sort(a, a + n);
+    
+    cout << "Sorted Array: ";
+    for (int i = 0; i < n; i++) cout << a[i] << " ";
+    cout << "\n\n";
+
+    vector<int> v1 = {5, 1, 3, 2};
+    sort(v1.begin(), v1.end());
+    printVector("Sorted Full Vector", v1);
+    cout << endl;
+
+    // ---------------------------------------------------------
+    // 48. Sorting Only a Portion [start, end)
+    // ---------------------------------------------------------
+    vector<int> v2 = {5, 4, 3, 2, 1};
+    // Index positions: 0, 1, 2, 3, 4
+    // Values:        {5, 4, 3, 2, 1}
+    
+    // Sorts elements at indices 1, 2, and 3 (excluding index 4)
+    sort(v2.begin() + 1, v2.begin() + 4); 
+    printVector("Portion Sorted (Indices 1 to 3)", v2);
+    // Output: 5 2 3 4 1
+    cout << endl;
+
+    // ---------------------------------------------------------
+    // 49. Descending Sort using greater<int>()
+    // ---------------------------------------------------------
+    vector<int> v3 = {1, 3, 2, 5, 4};
+    sort(v3.begin(), v3.end(), greater<int>());
+    printVector("Descending Sort", v3);
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Sorted Array: 1 2 3 5 
+
+Sorted Full Vector: 1 2 3 5 
+
+Portion Sorted (Indices 1 to 3): 5 2 3 4 1 
+
+Descending Sort: 5 4 3 2 1 
+
+```
+
+---
+
+### Summary Table for `std::sort`
+
+| Target | Code | Time Complexity |
+| --- | --- | --- |
+| **Array (Ascending)** | `sort(a, a + n);` | $O(N \log N)$ |
+| **Vector (Ascending)** | `sort(v.begin(), v.end());` | $O(N \log N)$ |
+| **Sub-range (Ascending)** | `sort(v.begin() + L, v.begin() + R + 1);` *(for range $[L, R]$)* | $O(K \log K)$ *(where $K = R - L + 1$)* |
+| **Vector (Descending)** | `sort(v.begin(), v.end(), greater<int>());` | $O(N \log N)$ |
+
+> **Key Takeaway for DSA:**
+> `std::sort()` in C++ uses **IntroSort** (a hybrid of QuickSort, HeapSort, and InsertionSort), guaranteeing worst-case performance of **$O(N \log N)$**.
 ------------------------------------------------------------------------
 
 # 50. Custom Comparator
@@ -2254,6 +2620,95 @@ Ask:
 Return `true` if yes, otherwise `false`.
 
 This approach makes custom sorting much easier.
+Your mental model for custom comparators is **100% correct** and is the single best way to approach sorting logic in C++!
+
+Taking just two elements `p1` and `p2` and asking *"Should `p1` come before `p2`?"* avoids getting confused by the full array.
+
+
+
+---
+
+### Complete Executable Code
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <utility>   // For std::pair
+#include <algorithm> // For std::sort
+
+using namespace std;
+
+// Step 1 & 2: Identify data type and accept two parameters
+bool comparator(pair<int, int> p1, pair<int, int> p2) {
+    // Case 1: If second elements are different, 
+    // smaller second element comes first (increasing order)
+    if (p1.second < p2.second) return true;
+    if (p1.second > p2.second) return false;
+
+    // Case 2: If second elements are equal, 
+    // larger first element comes first (decreasing order)
+    return p1.first > p2.first;
+}
+
+int main() {
+    vector<pair<int, int>> v = {
+        {1, 2},
+        {2, 1},
+        {4, 1}
+    };
+
+    // Pass the function name as the 3rd argument
+    sort(v.begin(), v.end(), comparator);
+
+    // Print the sorted vector
+    cout << "Sorted pairs:\n";
+    for (auto p : v) {
+        cout << "{" << p.first << ", " << p.second << "}\n";
+    }
+
+    return 0;
+}
+
+```
+
+### Output
+
+```text
+Sorted pairs:
+{4, 1}
+{2, 1}
+{1, 2}
+
+```
+
+---
+
+### Pro-Tips & Common Gotchas for C++ Comparators
+
+#### 1. Avoid Duplicate Logic (Shorter Version)
+
+Instead of checking `p1.second < p2.second` and `p1.second > p2.second` separately, you can handle it like this:
+
+```cpp
+bool comparator(const pair<int, int>& p1, const pair<int, int>& p2) {
+    if (p1.second != p2.second) {
+        return p1.second < p2.second; // Increasing by second
+    }
+    return p1.first > p2.first;      // Decreasing by first
+}
+
+```
+
+#### 2. Pass by Reference (`const &`)
+
+Notice the `const pair<int, int>&` above. Passing parameters by **const reference** prevents C++ from making unnecessary copies of objects during every comparison, making your code significantly faster.
+
+#### 3. Strict Weak Ordering (Crucial Rule!)
+
+Never return `true` when two elements are equal in value. Returning `true` for equal values causes undefined behavior (and can lead to runtime errors/segmentation faults) because C++ requires a **Strict Weak Ordering** relationship.
+
+> **Example:**
+> If `p1 == p2`, the comparator **must** return `false`.
 
 ------------------------------------------------------------------------
 
@@ -2484,18 +2939,17 @@ Output:
 
 The lecture focuses on these commonly useful algorithms:
 
-  STL                        Purpose
-  -------------------------- -------------------------------------------
-  `sort()`                   Sort a range
-  `greater<>`                Descending/custom ordering helper
-  `__builtin_popcount()`     Count set bits
-  `__builtin_popcountll()`   Count set bits in `long long`
-  `next_permutation()`       Generate next lexicographical permutation
-  `max_element()`            Find maximum element
-  `min_element()`            Find minimum element
+| STL Algorithm | Purpose |
+| :--- | :--- |
+| `sort()` | Sort a range |
+| `greater<>` | Descending/custom ordering helper |
+| `__builtin_popcount()` | Count set bits |
+| `__builtin_popcountll()` | Count set bits in `long long` |
+| `next_permutation()` | Generate next lexicographical permutation |
+| `max_element()` | Find maximum element |
+| `min_element()` | Find minimum element |
 
-There are many more STL algorithms, but you can learn additional ones as
-needed while solving problems.
+There are many more STL algorithms, but you can learn additional ones as needed while solving problems.
 
 ------------------------------------------------------------------------
 
@@ -2593,37 +3047,36 @@ but not `40`.
 
 # 63. Important STL Complexity Summary
 
-  Container / Operation                      Complexity
-  ---------------------------------- ------------------
-  Vector random access `v[i]`                    `O(1)`
-  Vector `push_back()`                 Amortized `O(1)`
-  Vector `pop_back()`                            `O(1)`
-  Vector insertion/erase in middle               `O(n)`
-  Stack `push()`                                 `O(1)`
-  Stack `pop()`                                  `O(1)`
-  Stack `top()`                                  `O(1)`
-  Queue `push()`                                 `O(1)`
-  Queue `pop()`                                  `O(1)`
-  Queue `front()`                                `O(1)`
-  Queue `back()`                                 `O(1)`
-  Priority queue `push()`                    `O(log n)`
-  Priority queue `pop()`                     `O(log n)`
-  Priority queue `top()`                         `O(1)`
-  Set `insert()`                             `O(log n)`
-  Set `find()`                               `O(log n)`
-  Set `erase()`                              `O(log n)`
-  Map `insert()`                             `O(log n)`
-  Map `find()`                               `O(log n)`
-  Map `erase()`                              `O(log n)`
-  Unordered set average operations               `O(1)`
-  Unordered map average operations               `O(1)`
-  Unordered set/map worst case                   `O(n)`
-  `max_element()`                                `O(n)`
-  `min_element()`                                `O(n)`
-  `sort()`                                 `O(n log n)`
+| Container / Operation | Complexity |
+| :--- | :--- |
+| Vector random access `v[i]` | $O(1)$ |
+| Vector `push_back()` | Amortized $O(1)$ |
+| Vector `pop_back()` | $O(1)$ |
+| Vector insertion/erase in middle | $O(n)$ |
+| Stack `push()` | $O(1)$ |
+| Stack `pop()` | $O(1)$ |
+| Stack `top()` | $O(1)$ |
+| Queue `push()` | $O(1)$ |
+| Queue `pop()` | $O(1)$ |
+| Queue `front()` | $O(1)$ |
+| Queue `back()` | $O(1)$ |
+| Priority queue `push()` | $O(\log n)$ |
+| Priority queue `pop()` | $O(\log n)$ |
+| Priority queue `top()` | $O(1)$ |
+| Set `insert()` | $O(\log n)$ |
+| Set `find()` | $O(\log n)$ |
+| Set `erase()` | $O(\log n)$ |
+| Map `insert()` | $O(\log n)$ |
+| Map `find()` | $O(\log n)$ |
+| Map `erase()` | $O(\log n)$ |
+| Unordered set average operations | $O(1)$ |
+| Unordered map average operations | $O(1)$ |
+| Unordered set/map worst case | $O(n)$ |
+| `max_element()` | $O(n)$ |
+| `min_element()` | $O(n)$ |
+| `sort()` | $O(n \log n)$ |
 
-> Complexity can depend on the specific operation and iterator/container
-> type. The table above is the standard DSA-level summary.
+> **Note:** Complexity can depend on the specific operation and iterator/container type. The table above is the standard DSA-level summary.
 
 ------------------------------------------------------------------------
 

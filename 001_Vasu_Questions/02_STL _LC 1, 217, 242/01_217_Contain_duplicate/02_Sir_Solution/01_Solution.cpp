@@ -1,5 +1,5 @@
 // my code have problem in the time complexity
-
+//https://leetcode.com/problems/contains-duplicate/description/
 
 
 #include <bits/stdc++.h>

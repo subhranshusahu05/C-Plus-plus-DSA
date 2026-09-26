@@ -1,0 +1,15 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string TimeConvert(int num) {
+    int hours = num / 60;
+    int minutes = num % 60;
+    return to_string(hours) + ":" + to_string(minutes);
+}
+
+int main() {
+    cout << TimeConvert(136) << endl; // 2:16
+    cout << TimeConvert(45) << endl;  // 0:45
+    return 0;
+}

@@ -13,3 +13,58 @@ int main() {
     cout << TimeConvert(45) << endl;  // 0:45
     return 0;
 }
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+int MissingDigit(string strParam) {
+    vector<string> parts;
+    stringstream ss(strParam);
+    string token;
+    while (ss >> token) parts.push_back(token);
+
+    string left = parts[0];
+    string op = parts[1];
+    string right = parts[2];
+    string result = parts[4]; // parts[3] is "="
+
+    for (int digit = 0; digit <= 9; digit++) {
+        string d = to_string(digit);
+        string leftCopy = left, rightCopy = right, resultCopy = result;
+
+        size_t pos;
+        if ((pos = leftCopy.find('x')) != string::npos) leftCopy.replace(pos, 1, d);
+        if ((pos = rightCopy.find('x')) != string::npos) rightCopy.replace(pos, 1, d);
+        if ((pos = resultCopy.find('x')) != string::npos) resultCopy.replace(pos, 1, d);
+
+        long long a = stoll(leftCopy);
+        long long b = stoll(rightCopy);
+        long long c = stoll(resultCopy);
+
+        bool valid = false;
+        if (op == "+") valid = (a + b == c);
+        else if (op == "-") valid = (a - b == c);
+        else if (op == "*") valid = (a * b == c);
+        else if (op == "/") valid = (b != 0 && a / b == c);
+
+        if (valid) return digit;
+    }
+    return -1;
+}
+
+int main() {
+    cout << MissingDigit("4 - 2 = x") << endl;       // 2
+    cout << MissingDigit("1x9 * 12 = 1200") << endl; // 0
+    return 0;
+}
